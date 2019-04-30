@@ -1,0 +1,92 @@
+.\"
+.\" -*- nroff -*-
+.\"
+.\"  Copyright (c) Abraham vd Merwe <abz@blio.com>
+.\"  All rights reserved.
+.\"
+.\"  Redistribution and use in source and binary forms, with or without
+.\"  modification, are permitted provided that the following conditions
+.\"  are met:
+.\"  1. Redistributions of source code must retain the above copyright
+.\"     notice, this list of conditions and the following disclaimer.
+.\"
+.\"  2. Redistributions in binary form must reproduce the above copyright
+.\"     notice, this list of conditions and the following disclaimer in the
+.\"     documentation and/or other materials provided with the distribution.
+.\"  3. Neither the name of the author nor the names of other contributors
+.\"     may be used to endorse or promote products derived from this software
+.\"     without specific prior written permission.
+.\"
+.\"  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\"  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\"  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\"  ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\"  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\"  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\"  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\"  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+.\"  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\"  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.TH TC 3abz  "September 2005" Unix "Library calls"
+.SH NAME
+tc_create, tc_add, tc_append, tc_destroy, tc_commit \-
+tc batch processing.
+.SH LIBRARIES
+Abz Library (-labz), Debug Library (-ldebug)
+.SH SYNOPSIS
+.nf
+.B #include <abz/tc.h>
+.sp
+.BI "int tc_create(struct batch *" tc ", int " flags ", const char *" fmt ", ...);
+.nl
+.BI "int tc_add(struct batch *" tc ",const char *" fmt ", ...);
+.nl
+.BI "int tc_append(struct batch *" tc ",const char *" fmt ", ...);
+.nl
+.BI "void tc_destroy(struct batch *" tc ");
+.nl
+.BI "int tc_commit(struct batch *" tc ");
+.fi
+.SH DESCRIPTION
+These functions enables the caller to construct a list of commands which are
+then piped to the specified program's stdin file descriptor. The called
+program's output is discarded.
+.PP
+\fBtc_create()\fP creates an tc batch. It should be called before
+any of the other functions. The specified arguments specify the command that
+should be executed. When executed, its output will be discarded and its stdin
+file descriptor will be a file containing the list of commands added with
+\fBtc_add()\fP and \fBtc_append()\fP.
+.PP
+The \fIflags\fP argument to \fBtc_create()\fP is an OR of any of these:
+.TP
+.B BATCH_TESTING
+Don't execute tc, rather log the commands that would have been
+executed. Useful for debugging.
+.TP
+.B BATCH_FORCE
+Ignore tc-restore's return code (i.e. do not return an error if the
+program fails).
+.PP
+\fBtc_add()\fP adds a command to tc. It takes a pointer to the
+tc created with \fBtc_create()\fP and a printf-style string as
+parameters.
+.PP
+\fBtc_append()\fP appends parameters to the last command in tc.
+.PP
+\fBtc_destroy()\fP free resources allocated for tc.
+.PP
+\fBtc_commit()\fP executes the tc command batch. This function
+automatically free resources allocated for the tc, i.e. you should not
+call \fBtc_destroy()\fP after calling this function, except if it fails.
+.SH "RETURN VALUES"
+Except for \fBtc_destroy()\fP, all of these functions returns 0 if
+successful or -1 if some error occurred. Call \fBabz_get_error()\fP to
+retrieve error messages.
+.SH "NOTES"
+None of the libabz routines are thread-safe. I'm not planning to change this
+either! For more information, please see http://threading.2038bug.com/
+.SH "SEE ALSO"
+abz_get_error(3), batch_create(3), tc-restore(8)
+.SH "AUTHOR"
+Written by Abraham vd Merwe <abz@blio.com>

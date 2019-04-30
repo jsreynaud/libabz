@@ -1,0 +1,81 @@
+.\"
+.\" -*- nroff -*-
+.\"
+.\"  Copyright (c) Abraham vd Merwe <abz@blio.com>
+.\"  All rights reserved.
+.\"
+.\"  Redistribution and use in source and binary forms, with or without
+.\"  modification, are permitted provided that the following conditions
+.\"  are met:
+.\"  1. Redistributions of source code must retain the above copyright
+.\"     notice, this list of conditions and the following disclaimer.
+.\"
+.\"  2. Redistributions in binary form must reproduce the above copyright
+.\"     notice, this list of conditions and the following disclaimer in the
+.\"     documentation and/or other materials provided with the distribution.
+.\"  3. Neither the name of the author nor the names of other contributors
+.\"     may be used to endorse or promote products derived from this software
+.\"     without specific prior written permission.
+.\"
+.\"  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\"  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\"  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\"  ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\"  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\"  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\"  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\"  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+.\"  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\"  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.TH ARGV 3abz  "March 2007" Unix "Library calls"
+.SH NAME
+strtoargv, vtoargv, toargv, freeargv, argvtostr \- convert between argument lists and strings
+.SH LIBRARIES
+Abz Library (-labz), Debug Library (-ldebug)
+.SH SYNOPSIS
+.nf
+.B #include <abz/argv.h>
+.sp
+.BI "char **strtoargv(const char *" str ");
+.nl
+.BI "char **vtoargv(const char *" fmt ", va_list " ap ");
+.nl
+.BI "char **toargv(const char *" fmt ", ...);
+.nl
+.BI "void freeargv(char **" argv ");
+.nl
+.BI "void argvtostr(char *" str ",size_t " size ", char *const " argv "[]);
+.fi
+.SH DESCRIPTION
+These functions can be used to convert between strings and argument lists as
+used by the \fBexec()\fP famility of functions, and vice versa.
+.PP
+The \fBtoargv()\fP functions break up a string into NULL terminated list of
+arguments which can be used for the \fBexec()\fP family of functions. Same
+rules as that of most UNIX shells apply, i.e.
+.sp
+.RS
+.nf
+.ne 12
+.ta 8n 16n 32n
+a) '\\' is the escape character
+b) '"' can be used to quote strings
+c) leading and trailing whitespace is stripped from each argument
+.ta
+.fi
+.RE
+.PP
+The \fBargvtostr()\fP concatenates all the arguments in the specified
+argument list into a single string of specified size (arguments seperated
+with spaces). The argv list must be NULL terminated.
+.SH "RETURN VALUE"
+All functions except \fBfreeargv()\fP and \fBargvtostr()\fP return a pointer
+to a NULL terminated argument list if successful, or NULL if an error
+occurred.
+.PP
+Call \fBabz_get_error()\fP to retrieve error messages.
+.SH "NOTES"
+None of the libabz routines are thread-safe. I'm not planning to change this
+either! For more information, please see http://threading.2038bug.com/
+.SH "AUTHOR"
+Written by Abraham vd Merwe <abz@blio.com>

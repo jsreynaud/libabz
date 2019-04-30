@@ -1,0 +1,85 @@
+.\"
+.\" -*- nroff -*-
+.\"
+.\"  Copyright (c) Abraham vd Merwe <abz@blio.com>
+.\"  All rights reserved.
+.\"
+.\"  Redistribution and use in source and binary forms, with or without
+.\"  modification, are permitted provided that the following conditions
+.\"  are met:
+.\"  1. Redistributions of source code must retain the above copyright
+.\"     notice, this list of conditions and the following disclaimer.
+.\"
+.\"  2. Redistributions in binary form must reproduce the above copyright
+.\"     notice, this list of conditions and the following disclaimer in the
+.\"     documentation and/or other materials provided with the distribution.
+.\"  3. Neither the name of the author nor the names of other contributors
+.\"     may be used to endorse or promote products derived from this software
+.\"     without specific prior written permission.
+.\"
+.\"  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\"  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\"  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\"  ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\"  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\"  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\"  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\"  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+.\"  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\"  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.TH STREAM 3abz  "March 2005" Unix "Library calls"
+.SH NAME
+stream_open, stream_read, stream_getline, stream_write, stream_close \-
+cached I/O operations.
+.SH LIBRARIES
+Abz Library (-labz), Debug Library (-ldebug)
+.SH SYNOPSIS
+.nf
+.B #include <abz/stream.h>
+.sp
+.BI "void stream_open(struct stream *" stream ", int " fd ");
+.nl
+.BI "ssize_t stream_read(struct stream *" stream ", void *" buf ", size_t " count ");
+.nl
+.BI "ssize_t stream_getline(struct stream *" stream ", char **" buf ");
+.nl
+.BI "ssize_t stream_write(struct stream *" stream ", const char *" buf ", size_t " count ");
+.nl
+.BI "void stream_close(struct stream *" stream ");
+.fi
+.SH DESCRIPTION
+These functions perform I/O operations on a file descriptor and possibly
+caches read data. These functions should not be mixed with calls to
+\fBread()\fP or \fBwrite()\fP.
+.PP
+\fBstream_open()\fP initializes the stream structure. It should be called
+before any of the other functions. The \fIfd\fP parameter should be an open
+file descriptor.
+.PP
+\fBstream_read()\fP attempts to read up to \fIcount\fP bytes from the stream
+into the buffer starting at \fIbuf\fP. If \fIcount\fP is zero, \fBread()\fP
+returns zero and has no other results. If \fIcount\fP is greater than
+SSIZE_MAX, the result is unspecified.
+.PP
+\fBstream_getline()\fP reads exactly one line of data, including the
+trailing '\n' from the stream. It allocates memory for, and stores the
+result in \fIbuf\fP. This function should only be called on file descriptors
+with blocking I/O selected as it will only return when a newline character
+is found or at the end of a file.
+.PP
+\fBstream_write()\fP writes up to \fIcount\fP bytes to the file referenced
+by the file descriptor \fIfd\fP from the buffer starting at \fIbuf\fP.
+.PP
+\fBstream_close()\fP free resources allocated for the stream and close and
+the file descriptor.
+.SH "RETURN VALUES"
+Except for \fBstream_open()\fP and \fBstream_close()\fP, all of these
+functions return the number of bytes transferred or -1 if an error occurred.
+Call \fBabz_get_error()\fP to retrieve error messages.
+.SH "NOTES"
+None of the libabz routines are thread-safe. I'm not planning to change this
+either! For more information, please see http://threading.2038bug.com/
+.SH "SEE ALSO"
+abz_get_error(3)
+.SH "AUTHOR"
+Written by Abraham vd Merwe <abz@blio.com>

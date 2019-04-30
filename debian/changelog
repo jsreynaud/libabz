@@ -1,0 +1,177 @@
+libabz (0.7.2) unstable; urgency=low
+
+  * Fixed strtoargv() parser.
+
+ -- Abraham vd Merwe <abz@debian.org>  Fri, 23 Mar 2007 23:35:42 +0200
+
+libabz (0.7.1) unstable; urgency=low
+
+  * Added runv().
+  * Added strtoargv(), vtoargv(), toargv(), freeargv(), argvtostr().
+
+ -- Abraham vd Merwe <abz@debian.org>  Wed, 21 Mar 2007 18:05:54 +0200
+
+libabz (0.6.3) unstable; urgency=low
+
+  * Use correct headers in atos.h (Closes: #378195)
+  * Use bash in Makefile (Closes: #370700)
+  * Don't clear errors in library functions.
+
+ -- Abraham vd Merwe <abz@debian.org>  Thu,  3 Aug 2006 09:50:01 +0200
+
+libabz (0.6.2) unstable; urgency=low
+
+  * Exclude current process in alive().
+  * Moved aliases to batch.c (Closes: #327610)
+
+ -- Abraham vd Merwe <abz@debian.org>  Mon, 24 Oct 2005 00:53:54 +0200
+
+libabz (0.6.1) unstable; urgency=low
+
+  * Added batch funtions.
+  * Added iptables, tc batch functions.
+
+ -- Abraham vd Merwe <abz@debian.org>  Sat, 10 Sep 2005 20:14:13 +0200
+
+libabz (0.5.1) unstable; urgency=low
+
+  * Added linked list routines.
+  * Added run(), block(), unblock().
+  * Added stream (i.e. caching) functions.
+
+ -- Abraham vd Merwe <abz@debian.org>  Wed,  2 Mar 2005 18:16:40 +0200
+
+libabz (0.4.7) unstable; urgency=low
+
+  * Fixed typo in contigmask man page.
+  * Fixed typo in putfile man page.
+
+ -- Abraham vd Merwe <abz@debian.org>  Thu, 19 Aug 2004 20:08:12 +0200
+
+libabz (0.4.6) unstable; urgency=low
+
+  * Set sin_family in atos().
+  * Fixed HIPQUAD macro on big endian machines.
+  * Updated debian policy version.
+  * Fixed man page sections.
+
+ -- Abraham vd Merwe <abz@debian.org>  Thu, 19 Aug 2004 20:08:12 +0200
+
+libabz (0.4.5) unstable; urgency=low
+
+  * Link libabz to libdebug (Closes: #235061)
+  * Updated debian policy version.
+
+ -- Abraham vd Merwe <abz@debian.org>  Sat, 28 Feb 2004 15:56:07 +0200
+
+libabz (0.4.4) unstable; urgency=low
+
+  * Added malloc attributes.
+  * Removed attribute definitions from abz/typedefs.h.
+  * Minor bugfixes.
+
+ -- Abraham vd Merwe <abz@debian.org>  Sun, 26 Oct 2003 15:51:04 +0200
+
+libabz (0.4.3) unstable; urgency=low
+
+  * Changed atop(), atoa(), atos(), and aton() to return data in network
+    byte order.
+
+ -- Abraham vd Merwe <abz@debian.org>  Sat, 18 Oct 2003 01:12:24 +0200
+
+libabz (0.4.2) unstable; urgency=low
+
+  * Added abz/typedefs.h.
+
+ -- Abraham vd Merwe <abz@debian.org>  Fri, 17 Oct 2003 12:37:48 +0200
+
+libabz (0.4.1) unstable; urgency=low
+
+  * Added atop(), atoa(), atos().
+  * Changed aton() to set network structure in host byte order.
+
+ -- Abraham vd Merwe <abz@debian.org>  Fri, 17 Oct 2003 12:11:54 +0200
+
+libabz (0.3.1) unstable; urgency=low
+
+  * Added pidfile().
+  * Removed unnecessary stub arguments from putfile() function.
+
+ -- Abraham vd Merwe <abz@debian.org>  Sun, 12 Oct 2003 15:26:03 +0200
+
+libabz (0.2.3) unstable; urgency=low
+
+  * Fixed tokens_destroy man page.
+
+ -- Abraham vd Merwe <abz@debian.org>  Tue,  7 Oct 2003 20:35:49 +0200
+
+libabz (0.2.2) unstable; urgency=low
+
+  * Removed references to abz/compat/inttypes.h (Closes: #214284, #214291)
+  * Updated dependencies.
+
+ -- Abraham vd Merwe <abz@debian.org>  Tue,  7 Oct 2003 18:56:07 +0200
+
+libabz (0.2.1) unstable; urgency=low
+
+  * Added sanitize().
+  * Added tokens_{parse,destroy} functions.
+  * Removed multiline string test in test_error.c (Closes: #199065).
+
+ -- Abraham vd Merwe <abz@debian.org>  Wed,  1 Oct 2003 22:35:15 +0200
+
+libabz (0.1.3) unstable; urgency=low
+
+  * Changed libabz0-dev section.
+  * Removed multiline string test in test_bprintf.c (Closes: #197758).
+
+ -- Abraham vd Merwe <abz@debian.org>  Sun, 22 Jun 2003 13:23:54 +0200
+
+libabz (0.1.2) unstable; urgency=low
+
+  * Introduced atou_base variable to change default behaviour of
+    atouXX() functions.
+
+ -- Abraham vd Merwe <abz@debian.org>  Sun, 19 Jan 2003 19:24:45 +0200
+
+libabz (0.1.1) unstable; urgency=low
+
+  * Added the abz_{set,cat,clear}_error() functions.
+  * Added atou64().
+  * Got rid of C library strtoXX functions.
+
+ -- Abraham vd Merwe <abz@debian.org>  Tue, 24 Dec 2002 13:52:01 +0200
+
+libabz (0.0.5) unstable; urgency=low
+
+  * Added abz suffix to manpages (Closes: #172768).
+
+ -- Abraham vd Merwe <abz@debian.org>  Fri, 13 Dec 2002 18:00:17 +0200
+
+libabz (0.0.4) unstable; urgency=low
+
+  * Updated the version (I screwed it up in 0.0.3).
+
+ -- Abraham vd Merwe <abz@debian.org>  Sat, 30 Nov 2002 20:11:03 +0200
+
+libabz (0.0.3) unstable; urgency=low
+
+  * Don't build shlibs with non-PIC code (Closes: #170104).
+
+ -- Abraham vd Merwe <abz@debian.org>  Sat, 30 Nov 2002 19:54:58 +0200
+
+libabz (0.0.2) unstable; urgency=low
+
+  * Added a build dependency for libdebug0-dev (Closes: #170053).
+
+ -- Abraham vd Merwe <abz@debian.org>  Thu, 21 Nov 2002 23:53:17 +0200
+
+libabz (0.0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Abraham vd Merwe <abz@debian.org>  Sun, 17 Nov 2002 19:22:29 +0200
+
+Local variables:
+mode: debian-changelog
+End:

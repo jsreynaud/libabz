@@ -1,0 +1,43 @@
+
+new
+===
+
+atod{32,16,8}       --
+{u,d}{32,16,8}toa   --
+traverse()          -- traverse should include safe_ftw() functionality (see
+                       projects/oasis/src)
+mv()                -- mv -f
+cp()                -- cp -af
+rm()                -- rm -rf
+
+change
+======
+
+bprintf()           -- maybe create own vdprintf() implementation?
+
+replace all errno-style errors with abz_get_error() style errors
+
+change behaviour of abz_cat_error() not to insert newlines
+
+potential
+=========
+
+signal.[ch]     - ipex
+telnet.[ch]		- arm-quagga
+killall.[ch]	- blio-utils
+sha1.[ch]		- blio-utils, ipex, meshvpn
+base64.[ch]		- blio-utils
+aes.[ch]		- blio-utils
+
+# maybe integrate these, signal, etc. into a network/daemon/event library
+tcpserver.[ch]
+tcpclient.[ch]
+udpserver.[ch]
+udpclient.[ch]
+
+red black tree implementation
+own dns routines (asynchronous)
+
+isemail()
+is{http,ftp,https}url()
+

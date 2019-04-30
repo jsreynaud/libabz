@@ -1,0 +1,3 @@
+usr/include/abz
+usr/lib/libabz.{a,so}
+usr/share/man/man3/*

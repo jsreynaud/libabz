@@ -1,0 +1,42 @@
+Source: libabz
+Section: devel
+Priority: optional
+Maintainer: Abraham vd Merwe <abz@debian.org>
+Build-Depends: debhelper (>> 3.0.0), libdebug0-dev (>= 0.4.1)
+Standards-Version: 3.6.1
+
+Package: libabz0
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends}
+Recommends: iptables, iproute
+Description: Miscellaneous useful routines
+ This library contains various routines needed by many of the
+ authors other programs.
+ .
+ Some of the routines can be used to concatenate strings, print
+ them, trim whitespace from them, read lines from files, create
+ and remove directory hierarchies and so forth.
+ .
+ This package contains files needed by programs linked against
+ this library.
+ .
+ Certain functions (i.e. the iptables_* and tc_* functions
+ are only usable if the recommended packages (iptables, iproute)
+ is installed.
+
+Package: libabz0-dev
+Architecture: any
+Section: libdevel
+Depends: ${shlibs:Depends}, libabz0 (= ${Source-Version}), libdebug0 (>= 0.4.1), libdebug0-dev (>= 0.4.1)
+Description: Development files for the abz library
+ This library contains various routines needed by many of the
+ authors other programs.
+ .
+ Some of the routines can be used to concatenate strings, print
+ them, trim whitespace from them, read lines from files, create
+ and remove directory hierarchies and so forth.
+ .
+ This package contains files needed if you wish to use libabz
+ in your own programs.
+

@@ -1,0 +1,66 @@
+.\"
+.\" -*- nroff -*-
+.\"
+.\"  Copyright (c) Abraham vd Merwe <abz@blio.com>
+.\"  All rights reserved.
+.\"
+.\"  Redistribution and use in source and binary forms, with or without
+.\"  modification, are permitted provided that the following conditions
+.\"  are met:
+.\"  1. Redistributions of source code must retain the above copyright
+.\"     notice, this list of conditions and the following disclaimer.
+.\"
+.\"  2. Redistributions in binary form must reproduce the above copyright
+.\"     notice, this list of conditions and the following disclaimer in the
+.\"     documentation and/or other materials provided with the distribution.
+.\"  3. Neither the name of the author nor the names of other contributors
+.\"     may be used to endorse or promote products derived from this software
+.\"     without specific prior written permission.
+.\"
+.\"  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\"  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\"  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\"  ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\"  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\"  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\"  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\"  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+.\"  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\"  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.TH ATOS 3abz "August 2004" Unix "Library calls"
+.SH NAME
+atos \- convert a string to a sockaddr_in structure.
+.SH LIBRARIES
+Abz Library (-labz), Debug Library (-ldebug)
+.SH SYNOPSIS
+.nf
+.B #include <abz/atos.h>
+.sp
+.BI "int atos(struct sockaddr_in *" addr ", const char *" str );
+.fi
+.SH DESCRIPTION
+The \fBatos()\fP function converts a string to the standard \fBstruct
+sockaddr_in\fP structure. The string should be in the following format:
+.PP
+.RS
+<host-or-addr> [ : <service-or-port> ]
+.RE
+.PP
+Both addresses and port numbers are stored network byte order.
+.SH "RETURN VALUE"
+The \fBatos()\fP function returns 0 if successful or -1 if some error
+occurred. Check errno to see what error occurred.
+.SH "NOTES"
+None of the libabz routines are thread-safe. I'm not planning to change this
+either! For more information, please see http://threading.2038bug.com/
+.PP
+If the library was compiled without the GETHOSTBYNAME flag, only ip-address
+may be specified, and if the library was compiled without the GETSERVBYNAME
+flag, only port numbers may be specified.
+.PP
+At the time of writing, the glibc library gethostbyname() function had a bug
+which caused it to resolve some invalid hostnames. In order to detect those
+cases, the \fBatos()\fP function also does a reverse lookup using
+gethostbyaddr() to see if the domain really exist.
+.SH "AUTHOR"
+Written by Abraham vd Merwe <abz@blio.com>

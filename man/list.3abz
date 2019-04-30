@@ -1,0 +1,166 @@
+.\"
+.\" -*- nroff -*-
+.\"
+.\"  Copyright (c) Abraham vd Merwe <abz@blio.com>
+.\"  All rights reserved.
+.\"
+.\"  Redistribution and use in source and binary forms, with or without
+.\"  modification, are permitted provided that the following conditions
+.\"  are met:
+.\"  1. Redistributions of source code must retain the above copyright
+.\"     notice, this list of conditions and the following disclaimer.
+.\"
+.\"  2. Redistributions in binary form must reproduce the above copyright
+.\"     notice, this list of conditions and the following disclaimer in the
+.\"     documentation and/or other materials provided with the distribution.
+.\"  3. Neither the name of the author nor the names of other contributors
+.\"     may be used to endorse or promote products derived from this software
+.\"     without specific prior written permission.
+.\"
+.\"  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\"  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\"  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\"  ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\"  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\"  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\"  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\"  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+.\"  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\"  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.TH LIST 3abz "March 2005" Unix "Library calls"
+.SH NAME
+LIST_HEAD_INIT, LIST_HEAD, INIT_LIST_HEAD, list_add, list_add_tail,
+list_del, list_del_init, list_empty, list_join, list_sort, list_entry,
+list_for_each, list_for_each_prev - manipulate linked lists
+.SH LIBRARIES
+Abz Library (-labz), Debug Library (-ldebug)
+.SH SYNOPSIS
+.nf
+.B #include <abz/list.h>
+.sp
+.BI "LIST_HEAD_INIT(name)
+.nl
+.BI "LIST_HEAD(name)
+.nl
+.BI "void INIT_LIST_HEAD(struct list_head *" head ");
+.nl
+.BI "void list_add(struct list_head *" entry ", struct list_head *" head ");
+.nl
+.BI "void list_add_tail(struct list_head *" entry ", struct list_head *" head ");
+.nl
+.BI "void list_del(struct list_head *" entry ");
+.nl
+.BI "void list_del_init(struct list_head *" entry ");
+.nl
+.BI "int list_empty(struct list_head *" head ");
+.nl
+.BI "void list_join(struct list_head *" list ", struct list_head *" head ");
+.nl
+.BI "void list_sort(struct list_head *" head ",
+.in +\w'void list_sort('u
+.BI int (*" compar ")(struct list_head *,struct list_head *));
+.in
+.nl
+.BI "type *list_entry(ptr,type,member);
+.nl
+.BI "list_for_each(pos,tmp,head)
+.nl
+.BI "list_for_each_prev(pos,tmp,head)
+.nl
+.fi
+.SH DESCRIPTION
+These routines and macros can be used to implement and manipulate doubly
+linked lists.
+.SS Initialization
+There are three macros to help you declare and initialize a linked list.
+.sp
+.RS
+.nf
+.ne 12
+.ta 8n 16n 32n
+struct list_head list = LIST_HEAD_INIT(list);
+LIST_HEAD(list);
+struct list_head list; INIT_LIST_HEAD(&list);
+.ta
+.fi
+.RE
+.PP
+The three lines above all accomplish the same thing.
+.SS Manipulation
+You would normally declare a structure with all the relevant members and at
+least one list_head pointer for use by the functions below. For example:
+.sp
+.RS
+.nf
+.ne 12
+.ta 8n 16n 32n
+struct my_list {
+	...
+	struct list_head node;
+};
+.ta
+.fi
+.RE
+.PP
+Once the structure have been added to the list, you can get a pointer to
+your structure using the \fBlist_entry()\fP macro. For example:
+.sp
+.RS
+.nf
+.ne 12
+.ta 8n 16n 32n
+struct list_head *ctr,*tmp;
+struct my_list *entry;
+
+list_for_each(ctr,tmp,&list) {
+	entry = list_entry(ctr,struct my_list,node);
+	/* entry points to your `struct my_list' */
+}
+.ta
+.fi
+.RE
+.LP
+.B list_add()
+adds a new entry after the specified \fIhead\fP. This is good for
+implementing stacks.
+.LP
+.B list_add_tail()
+adds a new entry before the specified \fIhead\fP. This is good for
+implementing queues.
+.LP
+.B list_del()
+deletes an antry. \fBlist_empty()\fP on \fIentry\fP does not return true
+after this. The entry is in an undefined state.
+.LP
+.B list_del_init()
+deletes an entry and reinitializes init.
+.LP
+.B list_join()
+joins two lists. \fIlist\fP will be prepended to \fIhead\fP. \fIlist\fP is
+undefined after this operation.
+.LP
+.B list_sort()
+sorts a list. The contents of the list are sorted in ascending order
+according to a comparison function pointed to by \fIcompar\fP, which is
+called with two arguments that point to the objects being compared.
+.PP
+The comparison function must return an integer less than, equal to, or
+greater than zero if the first argument is considered to be respectively
+less than, equal to, or greater than the second. If two members compare as
+equal, their order in the sorted list is undefined.
+.SS Traversal
+Two for-loop macros are provided to traverse lists.
+.LP
+.B list_for_each
+iterates over a list. \fIpos\fP is the &struct list_head to use as a loop
+counter, \fItmp\fP is another &struct list_head to use as temporary storage,
+and \fIhead\fP is the head of the list.
+.LP
+.B list_for_each_prev
+iterates over a list in reverse order. The parameters are the same as those
+in the \fBlist_for_each\fP macro.
+.SH "NOTES"
+None of the libabz routines are thread-safe. I'm not planning to change this
+either! For more information, please see http://threading.2038bug.com/
+.SH "AUTHOR"
+Written by Abraham vd Merwe <abz@blio.com>

@@ -1,0 +1,78 @@
+.\"
+.\" -*- nroff -*-
+.\"
+.\"  Copyright (c) Abraham vd Merwe <abz@blio.com>
+.\"  All rights reserved.
+.\"
+.\"  Redistribution and use in source and binary forms, with or without
+.\"  modification, are permitted provided that the following conditions
+.\"  are met:
+.\"  1. Redistributions of source code must retain the above copyright
+.\"     notice, this list of conditions and the following disclaimer.
+.\"
+.\"  2. Redistributions in binary form must reproduce the above copyright
+.\"     notice, this list of conditions and the following disclaimer in the
+.\"     documentation and/or other materials provided with the distribution.
+.\"  3. Neither the name of the author nor the names of other contributors
+.\"     may be used to endorse or promote products derived from this software
+.\"     without specific prior written permission.
+.\"
+.\"  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\"  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\"  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\"  ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\"  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\"  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\"  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\"  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+.\"  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\"  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.TH ATON 3abz "August 2004" Unix "Library calls"
+.SH NAME
+aton \- convert a string to a network structure.
+.SH LIBRARIES
+Abz Library (-labz), Debug Library (-ldebug)
+.SH SYNOPSIS
+.nf
+.B #include <abz/aton.h>
+.sp
+.BI "int aton(struct network *" net ", const char *" str );
+.fi
+.SH DESCRIPTION
+The \fBaton()\fP function converts a string to a network structure which is
+defined in \fI<abz/aton.h>\fP as follows:
+.sp
+.RS
+.nf
+.ne 12
+.ta 8n 16n 32n
+struct network
+{
+    uint32_t address;
+    uint32_t netmask;
+};
+.ta
+.fi
+.RE
+.PP
+Both the \fIaddress\fP and \fInetmask\fP fields are stored in network byte
+order.
+.PP
+The network string should be either a valid ip-address, network and CIDR
+mask, or a valid (resolvable) hostname.
+.SH "RETURN VALUE"
+The \fBaton()\fP function returns 0 if successful or -1 if the
+string is not a valid network.
+.SH "NOTES"
+None of the libabz routines are thread-safe. I'm not planning to change this
+either! For more information, please see http://threading.2038bug.com/
+.PP
+If the library was compiled without the GETHOSTBYNAME flag, only the
+ip-address and network functionality will be available.
+.PP
+At the time of writing, the glibc library gethostbyname() function had a bug
+which caused it to resolve some invalid hostnames. In order to detect those
+cases, the \fBaton()\fP function also does a reverse lookup using
+gethostbyaddr() to see if the domain really exist.
+.SH "AUTHOR"
+Written by Abraham vd Merwe <abz@blio.com>
